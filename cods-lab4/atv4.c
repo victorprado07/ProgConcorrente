@@ -39,7 +39,6 @@ void *executa (void *arg) {
     if (ehPrimo(i)){
       pthread_mutex_lock(&mutex);
       soma++;
-      printf("id= %d  soma= %ld \n", id, soma); 
       pthread_mutex_unlock(&mutex);
     }
   }
@@ -87,7 +86,7 @@ int main(int argc, char *argv[]) {
   //--finaliza o mutex
   pthread_mutex_destroy(&mutex);
   
-  printf("Valor de 'soma' = %ld\n foi calculado em %lf seg", soma, delta);
-
+  printf("Valor da soma = %ld - foi calculado em %lf segundos\n", soma, delta);
+  
   return 0;
 }
