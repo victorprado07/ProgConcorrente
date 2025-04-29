@@ -2,9 +2,11 @@
 #include <stdlib.h> 
 #include <pthread.h>
 #include <math.h>
+#include "timer.h"
 
 long int soma = 0; //variavel compartilhada entre as threads
 pthread_mutex_t mutex; //variavel de lock para exclusao mutua
+double inicio, fim, delta;
 
 typedef struct {
   int n; 
@@ -60,6 +62,8 @@ int main(int argc, char *argv[]) {
 
   ThreadArgs args = {n, nthreads, divisao}; 
 
+  GET_TIME(inicio);
+
   //--aloca as estruturas
   tid = (pthread_t*) malloc(sizeof(pthread_t)*(nthreads+1));
   if(tid==NULL) {puts("ERRO--malloc"); return 2;}
@@ -78,11 +82,12 @@ int main(int argc, char *argv[]) {
         printf("--ERRO: pthread_join() \n"); exit(-1); 
     } 
   } 
-
+  GET_TIME(fim);
+  delta = fim - inicio;
   //--finaliza o mutex
   pthread_mutex_destroy(&mutex);
   
-  printf("Valor de 'soma' = %ld\n", soma);
+  printf("Valor de 'soma' = %ld\n foi calculado em %lf seg", soma, delta);
 
   return 0;
 }
